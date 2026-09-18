@@ -1,12 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
-import 'services/database_factory.dart';
 import 'providers/note_provider.dart';
 import 'screens/login_screen.dart';
 
 void main() async {
-  configureDatabaseFactory();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Configuration spéciale pour le web (Chrome)
+  if (kIsWeb) {
+    databaseFactory = databaseFactoryFfiWeb;
+  }
 
   runApp(
     ChangeNotifierProvider(
